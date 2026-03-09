@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ascii-art-mcp · by theduodecim</title>
+<meta name="description" content="An MCP server that gives AI access to a curated ASCII art database. Built with Node.js + TypeScript.">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #00ff95;
+    --green-dim: #00ff9530;
+    --green-faint: #00ff9510;
+    --bg: #080808;
+    --bg2: #0e0e0e;
+    --bg3: #141414;
+    --border: #1f1f1f;
+    --text: #c8c8c8;
+    --muted: #444;
+    --mono: 'Share Tech Mono', monospace;
+    --display: 'Bebas Neue', sans-serif;
+    --body: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* SCANLINES */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 24px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent);
+    opacity: 0.5;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #00ff9508 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    border: 1px solid var(--green-dim);
+    padding: 5px 14px;
+    border-radius: 2px;
+    letter-spacing: 0.15em;
+    margin-bottom: 28px;
+    background: var(--green-faint);
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(72px, 12vw, 140px);
+    line-height: 0.9;
+    letter-spacing: 0.03em;
+    color: #fff;
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+
+  .hero h1 span {
+    color: var(--green);
+    text-shadow: 0 0 40px #00ff9550;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-top: 24px;
+    font-weight: 300;
+    animation: fadeDown 0.6s 0.2s ease both;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 14px;
+    margin-top: 40px;
+    animation: fadeDown 0.6s 0.3s ease both;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    padding: 12px 28px;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--green);
+    color: #000;
+    font-weight: 700;
+  }
+  .btn-primary:hover {
+    background: #fff;
+    box-shadow: 0 0 30px #00ff9540;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover {
+    border-color: var(--green-dim);
+    color: var(--green);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── COMPARISON ─── */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 100px 24px;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: var(--display);
+    font-size: clamp(40px, 6vw, 72px);
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 48px;
+  }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .compare-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+
+  .compare-card:hover { transform: translateY(-4px); }
+
+  .compare-card.winner {
+    border-color: var(--green-dim);
+    box-shadow: 0 0 60px #00ff9510, inset 0 0 60px #00ff9505;
+  }
+
+  .card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .winner .card-title { color: var(--green); }
+
+  .card-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+
+  .winner .card-dot {
+    background: var(--green);
+    box-shadow: 0 0 10px var(--green);
+    animation: blink 1.5s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .card-body {
+    padding: 28px 24px;
+  }
+
+  .art-pre {
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.55;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  .compare-card:not(.winner) .art-pre { color: #333; }
+  .winner .art-pre {
+    color: var(--green);
+    text-shadow: 0 0 10px #00ff9530;
+  }
+
+  .card-footer {
+    padding: 14px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .vs-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 28px;
+    font-family: var(--display);
+    font-size: 48px;
+    color: var(--border);
+  }
+
+  /* ─── FEATURES ─── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2px;
+    margin-top: 48px;
+  }
+
+  .feature {
+    background: var(--bg2);
+    padding: 32px 28px;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .feature:hover {
+    border-color: var(--green-dim);
+    background: var(--bg3);
+  }
+
+  .feature-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .feature h3 {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: #fff;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .feature p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ─── TOOLS ─── */
+  .tools-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 48px;
+  }
+
+  .tool-row {
+    display: grid;
+    grid-template-columns: 220px 1fr auto;
+    align-items: center;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 20px 28px;
+    gap: 24px;
+    transition: all 0.2s;
+  }
+
+  .tool-row:hover {
+    border-color: var(--green-dim);
+    background: var(--bg3);
+  }
+
+  .tool-name {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--green);
+    letter-spacing: 0.08em;
+  }
+
+  .tool-desc {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .tool-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    background: var(--green-faint);
+    border: 1px solid var(--green-dim);
+    color: var(--green);
+    white-space: nowrap;
+  }
+
+  /* ─── INSTALL ─── */
+  .install-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 48px;
+  }
+
+  .install-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 12px 20px;
+    color: var(--muted);
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+
+  .tab.active {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+
+  .install-content {
+    padding: 28px;
+  }
+
+  .code-block {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--green);
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .code-block span { color: var(--muted); }
+
+  .copy-btn {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.1em;
+  }
+
+  .copy-btn:hover { color: var(--green); border-color: var(--green-dim); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .footer-left {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .footer-left a {
+    color: var(--green);
+    text-decoration: none;
+  }
+  .footer-left a:hover { text-decoration: underline; }
+
+  .footer-right {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #222;
+    letter-spacing: 0.1em;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 700px) {
+    .compare-grid {
+      grid-template-columns: 1fr;
+    }
+    .vs-col { padding: 20px; font-size: 32px; }
+    .tool-row { grid-template-columns: 1fr; }
+    .tool-badge { display: none; }
+    footer { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="tag">▸ MODEL CONTEXT PROTOCOL</div>
+  <h1>ASCII<br><span>ART</span><br>MCP</h1>
+  <p class="hero-sub">An MCP server that gives AI direct access to a curated ASCII & Unicode art database. No API keys. No external services.</p>
+  <div class="hero-cta">
+    <a href="https://github.com/theduodecim/ascii-art-mcp" class="btn btn-primary" target="_blank">VIEW ON GITHUB</a>
+    <a href="https://theduodecim.github.io/portafolio-juanSebastian/" class="btn btn-ghost" target="_blank">PORTFOLIO</a>
+  </div>
+  <div class="scroll-hint">▾ SCROLL</div>
+</section>
+
+<!-- COMPARISON -->
+<section class="section">
+  <div class="section-label">// the proof</div>
+  <div class="section-title">AI ALONE<br>VS MY MCP</div>
+
+  <div class="compare-grid">
+
+    <div class="compare-card">
+      <div class="card-header">
+        <span class="card-title">AI without context</span>
+        <div class="card-dot"></div>
+      </div>
+      <div class="card-body">
+        <pre class="art-pre">        ██████████          
+      ██          ██        
+    ██   ██    ██   ██      
+    ██              ██      
+    ██   ████████   ██      
+      ██   ████   ██        
+        ██      ██          
+    ████  ██████  ████      
+   █  ██████████████  █     
+   █  ██  YABBA  ██  █     
+      ██   DOO!  ██        
+      ██          ██        
+    ████          ████      </pre>
+      </div>
+      <div class="card-footer">Prompt: "draw Fred Flintstone"</div>
+    </div>
+
+    <div class="vs-col">VS</div>
+
+    <div class="compare-card winner">
+      <div class="card-header">
+        <span class="card-title">✓ With ascii-art-mcp</span>
+        <div class="card-dot"></div>
+      </div>
+      <div class="card-body">
+        <pre class="art-pre">  \/________________        
+ /     _____________)
+/     /     /   \ |         
+\/\/\/     (O) (O)|           
+  |           ------, 
+  |  _       ______/ 
+  | (_      /   \  \
+  |        /  ___\_ \       
+  |        \      / / 
+__|_________\______/ 
+\______________\./__ 
+ /     .       | \  |
+ \    /_\   .  |  \ |\</pre>
+      </div>
+      <div class="card-footer">Same prompt — MCP served the real art</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" style="padding-top: 0;">
+  <div class="section-label">// what it does</div>
+  <div class="section-title">FEATURES</div>
+
+  <div class="features-grid">
+    <div class="feature">
+      <span class="feature-icon">⚡</span>
+      <h3>Zero Setup</h3>
+      <p>No API keys, no external services. All data travels directly into the AI's context via MCP.</p>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🔌</span>
+      <h3>Universal</h3>
+      <p>Works with Claude Desktop, Cursor, LM Studio, and any MCP-compatible client.</p>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">📦</span>
+      <h3>npm ready</h3>
+      <p>Install with <code style="font-family:var(--mono);color:var(--green)">npx ascii-art-mcp</code> or add it to your project directly.</p>
+    </div>
+    <div class="feature">
+      <span class="feature-icon">🗂</span>
+      <h3>MCP Registry</h3>
+      <p>Published on the official Model Context Protocol Registry for automatic discovery.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="section" style="padding-top: 0;">
+  <div class="section-label">// exposed tools</div>
+  <div class="section-title">MCP TOOLS</div>
+
+  <div class="tools-list">
+    <div class="tool-row">
+      <span class="tool-name">get_ascii_art</span>
+      <span class="tool-desc">Find an art entry by exact name or alias</span>
+      <span class="tool-badge">query: string</span>
+    </div>
+    <div class="tool-row">
+      <span class="tool-name">search_ascii</span>
+      <span class="tool-desc">Search entries by category, tags, or both</span>
+      <span class="tool-badge">categoria · tag</span>
+    </div>
+    <div class="tool-row">
+      <span class="tool-name">random_ascii</span>
+      <span class="tool-desc">Return a random entry, optionally filtered by type</span>
+      <span class="tool-badge">ascii | unicode</span>
+    </div>
+    <div class="tool-row">
+      <span class="tool-name">list_categories</span>
+      <span class="tool-desc">List all unique categories in the database</span>
+      <span class="tool-badge">no input</span>
+    </div>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section class="section" style="padding-top: 0;">
+  <div class="section-label">// get started</div>
+  <div class="section-title">INSTALL</div>
+
+  <div class="install-box">
+    <div class="install-tabs">
+      <button class="tab active" onclick="switchTab('npx', this)">npx</button>
+      <button class="tab" onclick="switchTab('npm', this)">npm</button>
+      <button class="tab" onclick="switchTab('clone', this)">clone</button>
+    </div>
+    <div class="install-content">
+      <div class="tab-panel active" id="tab-npx">
+        <div class="code-block">
+          <span>$</span> npx ascii-art-mcp
+          <button class="copy-btn" onclick="copyCode('npx ascii-art-mcp')">COPY</button>
+        </div>
+      </div>
+      <div class="tab-panel" id="tab-npm">
+        <div class="code-block">
+          <span>$</span> npm install ascii-art-mcp
+          <button class="copy-btn" onclick="copyCode('npm install ascii-art-mcp')">COPY</button>
+        </div>
+      </div>
+      <div class="tab-panel" id="tab-clone">
+        <div class="code-block">
+          <span>$</span> git clone https://github.com/theduodecim/ascii-art-mcp
+          <button class="copy-btn" onclick="copyCode('git clone https://github.com/theduodecim/ascii-art-mcp')">COPY</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    Built by <a href="https://github.com/theduodecim" target="_blank">@theduodecim</a><br>
+    <a href="https://theduodecim.github.io/portafolio-juanSebastian/" target="_blank">portfolio</a> ·
+    <a href="mailto:juansebastian.012@gmail.com">juansebastian.012@gmail.com</a> ·
+    <a href="https://github.com/theduodecim/ascii-art-mcp" target="_blank">github repo</a>
+  </div>
+  <div class="footer-right">MIT LICENSE · 2025</div>
+</footer>
+
+<script>
+  function switchTab(name, el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('tab-' + name).classList.add('active');
+  }
+
+  function copyCode(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const btns = document.querySelectorAll('.copy-btn');
+      btns.forEach(b => {
+        if (b.getAttribute('onclick').includes(text.split(' ')[0])) {
+          b.textContent = 'COPIED!';
+          setTimeout(() => b.textContent = 'COPY', 1500);
+        }
+      });
+    });
+  }
+
+  // Fade in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.compare-card, .feature, .tool-row').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
