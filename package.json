@@ -1,24 +1,50 @@
 {
   "name": "ascii-art-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "mcpName": "io.github.theduodecim/ascii-art",
   "description": "MCP server that exposes ASCII and Unicode art tools",
   "type": "module",
   "main": "dist/server.js",
+
+  "bin": {
+    "ascii-art-mcp": "./dist/server.js"
+  },
+
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "db.json"
+  ],
+
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "dev": "tsx src/server.ts"
   },
+
   "keywords": [
     "mcp",
+    "model-context-protocol",
     "ascii",
-    "typescript"
+    "ascii-art",
+    "ai-tools"
   ],
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theduodecim/ascii-art-mcp"
+  },
+
+  "homepage": "https://github.com/theduodecim/ascii-art-mcp",
+
   "license": "MIT",
+
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.11.1",
     "zod": "^3.23.8"
   },
+
   "devDependencies": {
     "@types/node": "^22.10.1",
     "tsx": "^4.19.2",
