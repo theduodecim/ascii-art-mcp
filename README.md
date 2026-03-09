@@ -2,7 +2,39 @@
 
 **ascii-art-mcp** is a **Model Context Protocol (MCP) server** built with **Node.js and TypeScript** that exposes tools for retrieving **ASCII and Unicode art** from a local database.
 
-The server communicates using **stdio transport**, making it compatible with MCP clients such as Claude Desktop, Cursor, LM Studio, Open WebUI, and other MCP-compatible environments.
+The server communicates using **stdio transport**, making it compatible with MCP clients such as:
+
+- Claude Desktop
+- Cursor
+- LM Studio
+- Open WebUI
+- Other MCP-compatible environments
+
+---
+
+# ▶ Run this MCP
+
+If you want to run this MCP server directly from the source repository, use:
+
+https://github.com/theduodecim/ascii-art-mcp/tree/main
+
+Clone the repository and start the server locally:
+
+```bash
+git clone https://github.com/theduodecim/ascii-art-mcp.git
+cd ascii-art-mcp
+npm install
+npm run build
+npm start
+```
+
+You can also run it instantly using **npx**:
+
+```bash
+npx ascii-art-mcp
+```
+
+This will start the MCP server using **stdio transport**, allowing MCP-compatible clients to connect and use the ASCII art tools.
 
 ---
 
@@ -38,14 +70,14 @@ Server name:
 io.github.theduodecim/ascii-art
 ```
 
-This allows MCP-compatible tools to discover and install it automatically.
+This allows MCP-compatible tools to **discover and install it automatically**.
 
 ---
 
 # ⚙️ Requirements
 
-* Node.js **20+**
-* npm
+- Node.js **20+**
+- npm
 
 ---
 
@@ -78,17 +110,17 @@ located in the repository root.
 
 ## get_ascii_art
 
-Finds an art entry by exact `nombre` or by an exact value in `aliases`.
+Finds an art entry by exact **nombre** or by an exact value in **aliases**.
 
 ### Input
 
-| Field | Type   | Required |
-| ----- | ------ | -------- |
-| query | string | yes      |
+| Field | Type | Required |
+|------|------|------|
+| query | string | yes |
 
 ### Output
 
-Returns the entry's **art field** as plain text.
+Returns the entry's **art** field as plain text.
 
 ---
 
@@ -98,10 +130,10 @@ Searches entries by **categoria**, **tags**, or both.
 
 ### Input
 
-| Field     | Type   | Required |
-| --------- | ------ | -------- |
+| Field | Type | Required |
+|------|------|------|
 | categoria | string | optional |
-| tag       | string | optional |
+| tag | string | optional |
 
 At least **one filter is required**.
 
@@ -113,23 +145,23 @@ Returns matching entries' **art fields combined as text output**.
 
 ## random_ascii
 
-Returns a **random entry** from the database.
+Returns a random entry from the database.
 
 ### Input
 
-| Field | Type            | Required |
-| ----- | --------------- | -------- |
-| tipo  | ascii | unicode | optional |
+| Field | Type | Required |
+|------|------|------|
+| tipo | ascii \| unicode | required |
 
 ### Output
 
-Returns the selected entry's **art field** as plain text.
+Returns the selected entry's **art field as plain text**.
 
 ---
 
 ## list_categories
 
-Lists all **unique categories** present in the database.
+Lists all unique categories present in the database.
 
 ### Input
 
@@ -143,7 +175,7 @@ Category names as **newline-separated text**.
 
 # 🗂 Data Model
 
-Entries in `db.json` follow the **AsciiArtEntry** TypeScript interface:
+Entries in `db.json` follow the **AsciiArtEntry TypeScript interface**:
 
 ```
 src/types/asciiArt.ts
@@ -151,11 +183,11 @@ src/types/asciiArt.ts
 
 Each entry contains metadata such as:
 
-* name
-* category
-* tags
-* aliases
-* art content
+- name
+- category
+- tags
+- aliases
+- art content
 
 ---
 
@@ -182,9 +214,7 @@ proc.stdout.on("data", (d) => {
 
 function send(msg) {
   const json = JSON.stringify(msg);
-
-  const payload =
-    `Content-Length: ${Buffer.byteLength(json)}\r\n\r\n${json}\r\n`;
+  const payload = `Content-Length: ${Buffer.byteLength(json)}\r\n\r\n${json}\r\n`;
 
   console.log("\nSENDING:\n", json, "\n");
 
@@ -199,7 +229,10 @@ setTimeout(() => {
     params: {
       protocolVersion: "2024-11-05",
       capabilities: {},
-      clientInfo: { name: "tester", version: "1.0" }
+      clientInfo: {
+        name: "tester",
+        version: "1.0"
+      }
     }
   });
 }, 500);
@@ -228,9 +261,9 @@ setTimeout(() => {
 
 This verifies that the server:
 
-* initializes correctly
-* registers MCP tools
-* responds over stdio
+- initializes correctly  
+- registers MCP tools  
+- responds over stdio
 
 ---
 
@@ -243,34 +276,36 @@ src/
   server.ts
   tools/
   types/
+
 dist/
+
 db.json
 ```
 
-Main components:
+### Main components
 
-* **TypeScript MCP server**
-* **JSON database (db.json)**
-* **Zod validation for tool inputs**
-* **stdio transport**
+- TypeScript MCP server
+- JSON database (`db.json`)
+- Zod validation for tool inputs
+- stdio transport
 
 ---
 
 # 🎯 Purpose
 
-This project demonstrates how to build a **simple MCP tool server** that:
+This project demonstrates how to build a simple **MCP tool server** that:
 
-* runs locally
-* requires no API keys
-* exposes structured tools
-* serves static data through MCP
+- runs locally
+- requires **no API keys**
+- exposes structured tools
+- serves static data through MCP
 
 It can be used for:
 
-* testing MCP clients
-* demonstrations
-* fun ASCII art generation
-* example implementations of MCP tooling
+- testing MCP clients
+- demonstrations
+- fun ASCII art generation
+- example implementations of MCP tooling
 
 ---
 
