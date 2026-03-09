@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+
 import { loadAsciiArtDb } from "./data/loadDb.js";
 import { getAsciiArt, getAsciiArtInputSchema } from "./tools/getAsciiArt.js";
 import { listCategories, listCategoriesInputSchema } from "./tools/listCategories.js";
@@ -10,7 +11,7 @@ const entries = loadAsciiArtDb();
 
 const server = new McpServer({
   name: "ascii-art-mcp",
-  version: "0.1.0"
+  version: "0.1.0",
 });
 
 server.tool(
@@ -22,12 +23,22 @@ server.tool(
 
     if (!entry) {
       return {
-        content: [{ type: "text", text: `No entry found for query: ${query}` }]
+        content: [
+          {
+            type: "text",
+            text: `No entry found for query: ${query}`,
+          },
+        ],
       };
     }
 
     return {
-      content: [{ type: "text", text: entry.art }]
+      content: [
+        {
+          type: "text",
+          text: entry.art,
+        },
+      ],
     };
   }
 );
@@ -41,7 +52,12 @@ server.tool(
 
     if (results.length === 0) {
       return {
-        content: [{ type: "text", text: "No entries found with the provided filters." }]
+        content: [
+          {
+            type: "text",
+            text: "No entries found with the provided filters.",
+          },
+        ],
       };
     }
 
@@ -49,9 +65,9 @@ server.tool(
       content: [
         {
           type: "text",
-          text: results.map((entry) => entry.art).join("\n\n---\n\n")
-        }
-      ]
+          text: results.map((entry) => entry.art).join("\n\n---\n\n"),
+        },
+      ],
     };
   }
 );
@@ -65,12 +81,22 @@ server.tool(
 
     if (!entry) {
       return {
-        content: [{ type: "text", text: "No entries available for the selected tipo." }]
+        content: [
+          {
+            type: "text",
+            text: "No entries available for the selected tipo.",
+          },
+        ],
       };
     }
 
     return {
-      content: [{ type: "text", text: entry.art }]
+      content: [
+        {
+          type: "text",
+          text: entry.art,
+        },
+      ],
     };
   }
 );
@@ -83,17 +109,31 @@ server.tool(
     const categories = listCategories(entries);
 
     return {
-      content: [{ type: "text", text: categories.join("\n") }]
+      content: [
+        {
+          type: "text",
+          text: categories.join("\n"),
+        },
+      ],
     };
   }
 );
 
 async function main() {
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
+  try {
+    console.error("Starting MCP server...");
+
+    const transport = new StdioServerTransport();
+
+    console.error("Connecting transport...");
+
+    await server.connect(transport);
+
+    console.error("MCP server connected.");
+  } catch (error) {
+    console.error("Failed to start MCP server:", error);
+    process.exit(1);
+  }
 }
 
-main().catch((error) => {
-  console.error("Failed to start MCP server:", error);
-  process.exit(1);
-});
+main();

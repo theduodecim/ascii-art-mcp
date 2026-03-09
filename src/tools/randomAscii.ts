@@ -1,9 +1,9 @@
 import { z } from "zod";
 import type { AsciiArtEntry } from "../types/asciiArt.js";
 
-export const randomAsciiInputSchema = z.object({
+export const randomAsciiInputSchema = {
   tipo: z.enum(["ascii", "unicode"]).optional()
-});
+};
 
 export function randomAscii(
   entries: AsciiArtEntry[],

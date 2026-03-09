@@ -1,13 +1,13 @@
 [
-  {
-    "id": 1,
-    "nombre": "pedro_picapiedra",
-    "aliases": ["fred_flintstone", "flintstones"],
-    "categoria": "cartoons",
-    "tags": ["cartoon", "clasico", "hanna-barbera", "los_picapiedras"],
-    "tipo": "ascii",
-    "art": "  \\/________________        \n /     _____________)\n/     /     /   \\ |         \n\\/\\/\\/     (O) (O)|           \n  |           ------, \n  |  _       ______/ \n  | (_      /   \\  \\\n  |        /  ___\\_ \\       \n  |        \\      / / \n__|_________\\______/\n\\______________\\./__ \n /     .       | \\  |\n \\    /_\\   .  |  \\ |\\\     \n |`\\       /_\\ |   \\| \\"
-  },
+{
+  "id": 1,
+  "nombre": "pedro_picapiedra",
+  "aliases": ["fred_flintstone", "flintstones"],
+  "categoria": "cartoons",
+  "tags": ["cartoon", "clasico", "hanna-barbera", "los_picapiedras"],
+  "tipo": "ascii",
+  "art": "  \\/________________        \n /     _____________)\n/     /     /   \\\\ |         \n\\/\\/\\/     (O) (O)|           \n  |           ------, \n  |  _       ______/ \n  | (_      /   \\\\  \\\\\n  |        /  ___\\\\_ \\\\       \n  |        \\\\      / / \n__|_________\\\\______/ \n\\\\______________\\\\./__ \n /     .       | \\\\  |\n \\\\    /_\\\\   .  |  \\\\ |\\\\\\\\     \n |`\\\\       /_\\\\ |   \\\\| \\\\\\\""
+},
   {
     "id": 2,
     "nombre": "bart_simpson",
