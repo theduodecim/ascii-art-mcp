@@ -14,27 +14,15 @@ The server communicates using **stdio transport**, making it compatible with MCP
 
 # ▶ Run this MCP
 
-If you want to run this MCP server directly from the source repository, use:
+Just drop this link into any MCP-compatible AI chat:
 
+```
 https://github.com/theduodecim/ascii-art-mcp/tree/main
-
-Clone the repository and start the server locally:
-
-```bash
-git clone https://github.com/theduodecim/ascii-art-mcp.git
-cd ascii-art-mcp
-npm install
-npm run build
-npm start
 ```
 
-You can also run it instantly using **npx**:
+> "Run this MCP"
 
-```bash
-npx ascii-art-mcp
-```
-
-This will start the MCP server using **stdio transport**, allowing MCP-compatible clients to connect and use the ASCII art tools.
+The AI will clone the repo, build it, and run it automatically. No setup needed on your end.
 
 ---
 
@@ -81,7 +69,7 @@ This allows MCP-compatible tools to **discover and install it automatically**.
 
 ---
 
-# 🚀 Running the server
+# 🚀 Running the server manually
 
 Development mode:
 
@@ -259,17 +247,9 @@ setTimeout(() => {
 }, 4000);
 ```
 
-This verifies that the server:
-
-- initializes correctly  
-- registers MCP tools  
-- responds over stdio
-
 ---
 
 # 🧠 Architecture
-
-The project is structured as:
 
 ```
 src/
@@ -281,8 +261,6 @@ dist/
 
 db.json
 ```
-
-### Main components
 
 - TypeScript MCP server
 - JSON database (`db.json`)
@@ -299,13 +277,6 @@ This project demonstrates how to build a simple **MCP tool server** that:
 - requires **no API keys**
 - exposes structured tools
 - serves static data through MCP
-
-It can be used for:
-
-- testing MCP clients
-- demonstrations
-- fun ASCII art generation
-- example implementations of MCP tooling
 
 ---
 
