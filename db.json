@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "nombre": "pedro_picapiedra",
+    "aliases": ["fred_flintstone", "flintstones"],
+    "categoria": "cartoons",
+    "tags": ["cartoon", "clasico", "hanna-barbera", "los_picapiedras"],
+    "tipo": "ascii",
+    "art": "  \\/________________        \n /     _____________)\n/     /     /   \\ |         \n\\/\\/\\/     (O) (O)|           \n  |           ------, \n  |  _       ______/ \n  | (_      /   \\  \\\n  |        /  ___\\_ \\       \n  |        \\      / / \n__|_________\\______/\n\\______________\\./__ \n /     .       | \\  |\n \\    /_\\   .  |  \\ |\\\     \n |`\\       /_\\ |   \\| \\"
+  },
+  {
+    "id": 2,
+    "nombre": "bart_simpson",
+    "aliases": ["bart", "simpsons"],
+    "categoria": "cartoons",
+    "tags": ["cartoon", "clasico", "fox", "los_simpsons"],
+    "tipo": "ascii",
+    "art": " |\\/\\/\\/|  \n |      |  \n |      |  \n | (o)(o)  \n C      _) \n  | ,___|  \n  |   /    \n /____\\    \n/      \\"
+  },
+  {
+    "id": 3,
+    "nombre": "champagne",
+    "aliases": ["espumante", "copa", "brindis"],
+    "categoria": "food_and_drinks",
+    "tags": ["bebida", "alcohol", "festejo", "copa"],
+    "tipo": "ascii",
+    "art": "()   ()      ()    /\n  ()      ()  ()  /\n   ______________/___\n   \\            /   /\n    \\^^^^^^^^^^/^^^/\n     \\     ___/   /\n      \\   (   )  /\n       \\  (___) /\n        \\ /    /\n         \\    /\n          \\  /\n           \\/\n           ||\n           ||\n           ||\n           ||\n           ||\n           /\\\n          /;;\\\n     =============="
+  },
+  {
+    "id": 4,
+    "nombre": "dexter",
+    "aliases": ["dexter_laboratorio", "dexter's_laboratory"],
+    "categoria": "cartoons",
+    "tags": ["cartoon", "clasico", "cartoon_network"],
+    "tipo": "unicode",
+    "art": "⣿⣿⣿⣿⣿⠟⠉⠁⠄⠄⠄⠉⠉⠛⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿\n⣿⣿⣿⣿⣿⣆⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠈⢿⣿⣿⣿⣿⣿⣿\n⣿⣿⣿⡿⠋⣭⣅⠄⢤⣤⡀⠄⠄⠄⠄⠄⠄⠄⠉⢿⣿⡿⠿⣿\n⣿⣿⡿⠄⢀⣼⣿⡇⢸⣿⣿⠇⣤⣤⣤⡀⠄⠄⣀⡀⣾⣻⣿⣿\n⣿⣿⠁⢸⣿⡛⡿⠁⠘⠉⠒⠛⠛⠛⠛⠛⠛⣿⣿⡇⣿⣿⣿⣿\n⣿⣿⢃⡘⠻⠛⢹⡷⣄⠠⠤⣾⣿⡿⠟⢁⣰⣌⠻⡇⣿⣿⣿⣿\n⣿⣿⠈⠉⠄⠉⣷⣿⣿⣷⣶⣤⣤⣤⣶⣿⣿⣿⣿⣶⣶⢹⣿⣿\n⣿⡇⠄⠄⠄⠒⢿⣿⣿⣿⣿⣿⣿⣿⡿⠿⢛⣫⣭⠶⠢⠭⢝⣿\n⣿⡧⠄⠄⠄⠄⡘⠿⣿⣿⠿⢟⣋⣭⡖⣾⢸⣿⣿⠄⠄⠄⠠⣭\n⢫⣶⣤⠄⢠⣤⣿⣷⣦⣶⣿⣿⣿⣿⡟⣿⢸⣿⣧⠄⠄⠄⠄⣤\n⣷⣶⣶⣇⠚⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠚⢛⣛⣠⣶⣶⣾⣿\n⣿⣿⣿⡟⠄⠄⠄⠄⠄⡄⠄⠄⠄⠄⠄⠄⠄⠘⠿⢿⣿⣿⣿⣿\n⣿⡿⣋⣀⣠⣤⣤⣶⣾⣿⣿⣿⣿⣿⣷⣶⣶⣶⣶⣶⣿⣿⣿⣿"
+  },
+  {
+    "id": 5,
+    "nombre": "kenny",
+    "aliases": ["kenny_mccormick", "south_park"],
+    "categoria": "cartoons",
+    "tags": ["cartoon", "clasico", "comedy_central", "south_park"],
+    "tipo": "unicode",
+    "art": "⣿⣿⣿⣿⣿⣿⣿⡿⠿⠿⠿⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿\n⣿⣿⣿⠟⣁⣤⣶⣾⣿⣿⣿⣿⣷⣶⣤⣈⠻⣿⣿⣿⣿\n⡿⢟⣡⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣈⠻⣿⣿\n⢁⣾⣿⣿⣿⡿⠋⠁⣀⣤⣤⣀⠈⠙⢿⣿⣿⣿⣦⠈⢿\n⣼⣿⣿⣿⠏⠄⣠⣬⣍⣻⠿⣋⣵⣄⠄⠹⣿⣿⣿⣇⠘\n⣿⣿⣿⣿⡀⢸⣿⣿⣉⣿⢸⣟⢻⣿⡇⠄⢿⣿⣿⣿⠄\n⢻⣿⣿⣿⢣⠄⠻⠿⢛⣧⣬⣛⠿⠟⠃⢠⣼⣿⣿⣿⠁\n⡄⢻⣿⣿⣮⠳⣄⡈⠛⠿⡿⠟⢁⣠⡴⣡⣿⣿⣿⠃⣸\n⣿⣤⡙⠻⣿⣷⣮⣽⣟⠂⡐⣺⣯⣥⣾⣿⣿⠟⢡⣴⣿\n⣿⡿⢣⣦⣈⠛⠻⠿⣿⣼⣇⣿⣿⠿⠟⠋⣠⣄⢻⣿⣿\n⡟⣱⣿⣿⣿⣿⣷⣶⣶⣶⢰⣶⣶⣶⣾⣿⣿⣿⣦⠹⣿\n⠁⡛⠿⢿⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⣿⡿⠿⠇⣿\n⡙⠛⠋⠼⣿⣿⣿⣿⣿⣿⢸⣿⣿⣿⣿⣿⡅⠾⠿⠷⣨\n⣿⣿⠇⠸⠖⠒⠒⠲⠶⠶⠶⠖⠒⠲⠶⠶⠶⠸⣶⣿⣿\n⣿⣷⣶⣶⣶⣶⣶⣶⣶⣶⣷⣷⣿⣶⣶⣶⣶⣶⣾⣿⣿"
+  },
+  {
+    "id": 6,
+    "nombre": "helicoptero",
+    "aliases": ["helicopter", "helicóptero"],
+    "categoria": "vehiculos",
+    "tags": ["vehiculo", "aereo", "transporte"],
+    "tipo": "unicode",
+    "art": "▬▬▬.◙.▬▬▬\n═▂▄▄▓▄▄▂\n◢◤ █▀▀████▄▄▄▄◢◤\n█▄ █ █▄ ███▀▀▀▀▀▀▀╬\n◥█████◤\n══╩══╩══\n╬═╬\n╬═╬\n╬═╬\n╬═╬\n╬═╬\n╬═╬"
+  }
+]
