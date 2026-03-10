@@ -9,7 +9,8 @@ The server communicates using **stdio transport**, making it compatible with MCP
 - LM Studio
 - Open WebUI
 - Other MCP-compatible environments
-
+  
+https://theduodecim.github.io/ascii-art-mcp/
 ---
 
 # ▶ Run this MCP
