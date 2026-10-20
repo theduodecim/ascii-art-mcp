@@ -19,6 +19,7 @@
 
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "validate:data": "tsx scripts/validate-db.ts",
     "start": "node dist/server.js",
     "dev": "tsx src/server.ts"
   },
