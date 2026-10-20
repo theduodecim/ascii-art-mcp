@@ -1,5 +1,7 @@
 # ascii-art-mcp
 
+[![Ascii Art MCP server](https://mcprush.com/badge/theduodecim-ascii-art-mcp/card.svg)](https://mcprush.com/to/theduodecim-ascii-art-mcp?ref=badge)
+
 **ascii-art-mcp** is a **Model Context Protocol (MCP) server** built with **Node.js and TypeScript** that exposes tools for retrieving **ASCII and Unicode art** from a local database.
 
 The server communicates using **stdio transport**, making it compatible with MCP clients such as:
